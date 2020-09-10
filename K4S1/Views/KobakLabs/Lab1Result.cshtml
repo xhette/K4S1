@@ -1,0 +1,314 @@
+﻿@model K4S1.Models.KobakLabs.L1StatisticModel
+
+@{
+    ViewBag.Title = "Lab1Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int k = 0;
+}
+
+
+@if (Model != null)
+{
+    foreach (var item in Model.Results)
+    {
+        <hr />
+
+        if (item.Tasks != null)
+        {
+            <p>
+                [
+                @foreach (var task in item.Tasks)
+                {
+                    @task<span> </span>
+                }
+                ]
+
+            </p>
+        }
+        if (item.Schedule != null)
+        {
+            <table class="table">
+                <tbody>
+                    @for (int i = 0; i < item.Schedule.GetLength(0); i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < item.Schedule.GetLength(1); j++)
+                            {
+
+                                if (item.Schedule[i, j] > 0)
+                                {
+                                    <td>
+                                        @item.Schedule[i, j]
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        -
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    }
+                    <tr>
+                    </tr>
+                    <tr>
+                        @for (int j = 0; j < item.Results.Length; j++)
+                        {
+                            <td>
+                                @item.Results[j]
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        }
+        if (item.ResultStatistics != null && item.IndexesStatistics != null)
+        {
+            <p>
+                <h5>Статистика</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>
+                                Нагрузка
+                            </td>
+                            <td>
+                                Индекс
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int j = 0; j < item.ResultStatistics.Length; j++)
+                        {
+                            <tr>
+                                <td>
+                                    @item.ResultStatistics[j]
+                                </td>
+                                <td>
+                                    @item.IndexesStatistics[j]
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </p>
+        }
+        <p>
+            <b>Средняя нагрузка: </b>@item.ResultAverage
+        </p>
+        <p>
+            <b>Средний индекс: </b> @item.IndexAverage
+        </p>
+
+        <p>
+            <h4>
+                По возрастанию
+            </h4>
+        </p>
+
+        if (item.TasksAsc != null)
+        {
+            <p>
+                [
+                @foreach (var task in item.TasksAsc)
+                {
+                    @task<span> </span>
+                }
+                ]
+
+            </p>
+        }
+        if (item.ScheduleAsc != null)
+        {
+            <table class="table">
+                <tbody>
+                    @for (int i = 0; i < item.ScheduleAsc.GetLength(0); i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < item.ScheduleAsc.GetLength(1); j++)
+                            {
+
+                                if (item.ScheduleAsc[i, j] > 0)
+                                {
+                                    <td>
+                                        @item.ScheduleAsc[i, j]
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        -
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    }
+                    <tr>
+                    </tr>
+                    <tr>
+                        @for (int j = 0; j < item.ResultsAsc.Length; j++)
+                        {
+                            <td>
+                                @item.ResultsAsc[j]
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        }
+        if (item.ResultStatisticsAsc != null && item.IndexesStatisticsAsc != null)
+        {
+            <p>
+                <h5>Статистика</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>
+                                Нагрузка
+                            </td>
+                            <td>
+                                Индекс
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int j = 0; j < item.ResultStatisticsAsc.Length; j++)
+                        {
+                            <tr>
+                                <td>
+                                    @item.ResultStatisticsAsc[j]
+                                </td>
+                                <td>
+                                    @item.IndexesStatisticsAsc[j]
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </p>
+        }
+        <p>
+            <b>Средняя нагрузка: </b>@item.ResultAverageAsc
+        </p>
+        <p>
+            <b>Средний индекс: </b> @item.IndexAverageAsc
+        </p>
+
+
+        <p>
+            <h4>
+                По убыванию
+            </h4>
+        </p>
+
+        if (item.TasksDesc != null)
+        {
+            <p>
+                [
+                @foreach (var task in item.TasksDesc)
+                {
+                    @task<span> </span>
+                }
+                ]
+
+            </p>
+        }
+        if (item.ScheduleDesc != null)
+        {
+            <table class="table">
+                <tbody>
+                    @for (int i = 0; i < item.ScheduleDesc.GetLength(0); i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < item.ScheduleDesc.GetLength(1); j++)
+                            {
+
+                                if (item.ScheduleDesc[i, j] > 0)
+                                {
+                                    <td>
+                                        @item.ScheduleDesc[i, j]
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        -
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    }
+                    <tr>
+                    </tr>
+                    <tr>
+                        @for (int j = 0; j < item.ResultsDesc.Length; j++)
+                        {
+                            <td>
+                                @item.ResultsDesc[j]
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        }
+        if (item.ResultStatisticsDesc != null && item.IndexesStatisticsDesc != null)
+        {
+            <p>
+                <h5>Статистика</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>
+                                Нагрузка
+                            </td>
+                            <td>
+                                Индекс
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int j = 0; j < item.ResultStatisticsDesc.Length; j++)
+                        {
+                            <tr>
+                                <td>
+                                    @item.ResultStatisticsDesc[j]
+                                </td>
+                                <td>
+                                    @item.IndexesStatisticsDesc[j]
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </p>
+        }
+        <p>
+            <b>Средняя нагрузка: </b>@item.ResultAverageDesc
+        </p>
+        <p>
+            <b>Средний индекс: </b> @item.IndexAverageDesc
+        </p>
+    }
+
+}
+
+<hr />
+<h4>
+    Итоги
+</h4>
+<h5>
+    Критерии
+</h5>
+<p>
+    <b>Случайный(1): </b>@Model.Staticstics
+</p>
+<p>
+    <b>По возрастанию(2): </b>@Model.StaticsticsAsc
+</p>
+<p>
+    <b>По убыванию(3): </b>@Model.StaticsticsDesc
+</p>
+<h5>
+    Методы
+</h5>
