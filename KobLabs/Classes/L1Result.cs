@@ -104,7 +104,9 @@ namespace KobLabs.Classes
 			}
 		}
 
-		public int[] Methods { get; set; }
+		//public int[] Methods { get; set; }
+
+		public List<MethodMax> Methods { get; set; }
 
 		public L1Result() { }
 	}

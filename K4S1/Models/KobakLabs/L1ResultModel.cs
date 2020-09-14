@@ -88,7 +88,7 @@ namespace K4S1.Models.KobakLabs
 			get; set;
 		}
 
-		public int[] Methods { get; set; }
+		public List<MethodModel> Methods { get; set; }
 		public L1ResultModel()
 		{
 		}
@@ -119,7 +119,7 @@ namespace K4S1.Models.KobakLabs
 				IndexesStatisticsDesc = result.IndexesStatisticsDesc,
 				ResultAverageDesc = result.ResultAverageDesc,
 				IndexAverageDesc = result.IndexAverageDesc,
-				Methods = result.Methods,
+				Methods = result.Methods.Select(c => (MethodModel)c).ToList(),
 			};
 		}
 	}

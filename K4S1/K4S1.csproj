@@ -129,6 +129,8 @@
     <Compile Include="Models\KobakLabs\L1ResultModel.cs" />
     <Compile Include="Models\KobakLabs\L1StatisticModel.cs" />
     <Compile Include="Models\KobakLabs\Lab1Input.cs" />
+    <Compile Include="Models\KobakLabs\MethodEnum.cs" />
+    <Compile Include="Models\KobakLabs\MethodModel.cs" />
     <Compile Include="Models\LyahnitsLabs\LyahLab1Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

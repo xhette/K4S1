@@ -200,6 +200,25 @@ namespace KobLabs
 				}
 			}
 
+			result.Methods = new List<MethodMax>();
+
+			result.Methods.Add(new MethodMax
+			{
+				MethodName = Enums.MethodEnum.RandomMethod,
+				MaxValue = result.Results.Max()
+			});
+			result.Methods.Add(new MethodMax
+			{
+				MethodName = Enums.MethodEnum.Ascending,
+				MaxValue = result.ResultsAsc.Max()
+			});
+			result.Methods.Add(new MethodMax
+			{
+				MethodName = Enums.MethodEnum.Descending,
+				MaxValue = result.ResultsDesc.Max()
+			});
+
+			result.Methods = result.Methods.OrderBy(c => c.MaxValue).ToList();
 
 			return result;
 		}

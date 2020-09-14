@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\L1Result.cs" />
+    <Compile Include="Classes\MethodMax.cs" />
+    <Compile Include="Enums\MethodEnum.cs" />
     <Compile Include="Methods.cs" />
     <Compile Include="Classes\TasksArray.cs" />
     <Compile Include="Classes\Matrix.cs" />

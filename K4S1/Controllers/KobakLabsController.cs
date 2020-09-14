@@ -59,6 +59,23 @@ namespace Controllers
                 statisticModel.StaticsticsAsc = statisticModel.StaticsticsAsc / model.Q;
                 statisticModel.StaticsticsDesc = statisticModel.StaticsticsDesc / model.Q;
 
+                statisticModel.Methods = new float[3];
+
+                statisticModel.Methods[0] = (float)statisticModel.Results.Sum
+                    (
+                    c => c.Methods.IndexOf(c.Methods.FirstOrDefault(n => n.MethodName == MethodEnum.RandomMethod)) + 1
+                    ) / (float)statisticModel.Results.Count();
+
+                statisticModel.Methods[1] = (float)statisticModel.Results.Sum
+                    (
+                    c => c.Methods.IndexOf(c.Methods.FirstOrDefault(n => n.MethodName == MethodEnum.Ascending)) + 1
+                    ) / (float)statisticModel.Results.Count();
+
+                statisticModel.Methods[2] = (float)statisticModel.Results.Sum
+                    (
+                    c => c.Methods.IndexOf(c.Methods.FirstOrDefault(n => n.MethodName == MethodEnum.Descending)) + 1
+                    ) / (float)statisticModel.Results.Count();
+
                 return View("~/Views/KobakLabs/Lab1Result.cshtml", statisticModel);
             }
             else return View(model);
