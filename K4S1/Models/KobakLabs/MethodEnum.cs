@@ -16,6 +16,9 @@ namespace K4S1.Models.KobakLabs
 		Ascending = 2,
 
 		[Description("По убыванию")]
-		Descending = 3
+		Descending = 3,
+
+		[Description("Критический путь")]
+		Critical = 4
 	}
 }

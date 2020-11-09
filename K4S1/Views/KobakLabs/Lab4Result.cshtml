@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Lab4Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model K4S1.Models.KobakLabs.L4Model
+
+@foreach (var element in Model.Results)
+{
+    <p>
+        <h3>
+            Матрица
+        </h3>
+    </p>
+    <table class="table">
+        <tbody>
+            @for (int i = 0; i < element.Matrix.GetLength(0); i++)
+            {
+                <tr>
+                    @for (int j = 0; j < element.Matrix.GetLength(1); j++)
+                    {
+                        <td>
+                            @element.Matrix[i, j]
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    foreach (var result in element.Methods)
+    {
+        <p>
+            <h4>
+                @result.Barier
+            </h4>
+        </p>
+
+        <table class="table">
+            <tbody>
+                    <tr>
+                        @for (int i = 0; i < result.Result[0].Length; i++)
+                        {
+                        <td>
+                            @result.Result[0][i]
+                        </td>
+                        }
+                    </tr>
+            </tbody>
+        </table>
+    }
+}
+
+<p>
+    <h3>
+        Итог
+    </h3>
+</p>

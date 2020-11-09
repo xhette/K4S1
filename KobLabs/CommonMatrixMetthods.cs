@@ -32,17 +32,17 @@ namespace KobLabs
 			return temp;
 		}
 
-		public static void ConsoleWriteMatrix (Matrix matrix)
+		public static void ConsoleWriteMatrix (int[,] matrix)
 		{
 			Console.WriteLine();
 
-			for (int i = 0; i < matrix.Elements.GetLength(0); i++)
+			for (int i = 0; i < matrix.GetLength(0); i++)
 			{
-				for (int j = 0; j < matrix.Elements.GetLength(1); j++)
+				for (int j = 0; j < matrix.GetLength(1); j++)
 				{
-					if (matrix.Elements[i, j] != 0)
+					if (matrix[i, j] != 0)
 					{
-						Console.Write("{0,3}", matrix.Elements[i, j]);
+						Console.Write("{0,3}", matrix[i, j]);
 					}
 					else
 					{
@@ -54,32 +54,66 @@ namespace KobLabs
 			}
 		}
 
-		public static void ConsoleWriteTasks (TasksArray tasks)
+		public static void ConsoleWriteTasks (int[] tasks)
 		{
 			Console.Write("[ ");
-			for (int i = 0; i < tasks.Elements.Length; i++)
+			for (int i = 0; i < tasks.Length; i++)
 			{
-				Console.Write("{0}, ", tasks.Elements[i]);
+				Console.Write("{0}, ", tasks[i]);
 			}
 			Console.Write("]");
 			Console.WriteLine();
 		}
 
-		public static void ConsoleWriteResults (TasksArray result)
+		public static void ConsoleWriteResults (int[] result)
 		{
-			for (int i = 0; i < result.Elements.Length; i++)
+			for (int i = 0; i < result.Length; i++)
 			{
 				Console.Write("{0,3}", "___");
 			}
 
 			Console.WriteLine();
 
-			for (int i = 0; i < result.Elements.Length; i++)
+			for (int i = 0; i < result.Length; i++)
 			{
-				Console.Write("{0,3}", result.Elements[i]);
+				Console.Write("{0,3}", result[i]);
 			}
 
 			Console.WriteLine();
 		}
+
+		public static int[,] SortMatrixByCol (int[,] matrix)
+		{
+			SumMatrixElement[] summArray = new SumMatrixElement[matrix.GetLength(0)];
+
+			for (int i = 0; i < matrix.GetLength(0); i++)
+			{
+				summArray[i] = new SumMatrixElement
+				{
+					Row = i,
+					Sum = 0
+				};
+
+				for (int j = 0; j < matrix.GetLength(1); j++)
+				{
+					summArray[i].Sum += matrix[i, j];
+				}
+			}
+
+			summArray = summArray.OrderBy(c => c.Sum).ToArray();
+			summArray.Reverse();
+
+			int[,] resultMatrix = new int[matrix.GetLength(0), matrix.GetLength(1)];
+
+			for (int i = 0; i < summArray.Length; i++)
+			{
+				for (int j = 0; j < matrix.GetLength(1); j++)
+				{
+					resultMatrix[i, j] = matrix[summArray[i].Row, j];
+				}
+			}
+
+			return resultMatrix;
+		} 
 	}
 }

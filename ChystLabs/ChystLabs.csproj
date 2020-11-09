@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2FCC8922-88DF-4049-A1EA-497DE3803AD6}</ProjectGuid>
+    <ProjectGuid>{4C986A00-1A97-407E-8F8D-9C0C4C1B01C3}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>KobLabs</RootNamespace>
-    <AssemblyName>KobLabs</AssemblyName>
+    <RootNamespace>ChystLabs</RootNamespace>
+    <AssemblyName>ChystLabs</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Sprache, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sprache.2.3.2-develop-00041\lib\net45\Sprache.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,26 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\FinalResult.cs" />
-    <Compile Include="Classes\L1Result.cs" />
-    <Compile Include="Classes\L3Result.cs" />
-    <Compile Include="Classes\MethodMax.cs" />
-    <Compile Include="Classes\MethodStatistic.cs" />
-    <Compile Include="Classes\ScheduleResult.cs" />
-    <Compile Include="Classes\Statistic.cs" />
-    <Compile Include="Classes\StatisticElement.cs" />
-    <Compile Include="Classes\SumMatrixElement.cs" />
-    <Compile Include="Enums\MethodEnum.cs" />
-    <Compile Include="Methods.cs" />
-    <Compile Include="Classes\TasksArray.cs" />
-    <Compile Include="Classes\Matrix.cs" />
-    <Compile Include="CommonMatrixMetthods.cs" />
+    <Compile Include="FunctionParser.cs" />
+    <Compile Include="KoshiClasses.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

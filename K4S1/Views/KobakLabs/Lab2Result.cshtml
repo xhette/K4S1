@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "Lab2Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model K4S1.Models.KobakLabs.ResultModel
+
+@foreach (var element in Model.FinalStatistic)
+{
+    <p></p>
+    <h4>
+        Массив №@(Model.FinalStatistic.IndexOf(element) + 1)
+    </h4>
+    <p></p>
+    <table @*class="table"*@ cellspacing="2" border="1" cellpadding="5" width="600"  style="text-align:center;vertical-align:middle">
+        <tbody>
+            @for (int i = 0; i < element.Matrix.GetLength(0); i++)
+            {
+                <tr>
+                    @for (int j = 0; j < element.Matrix.GetLength(1); j++)
+                    {
+                        <td>
+                            @element.Matrix[i, j]
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p></p>
+
+    foreach (var e in element.StatisticElements)
+    {
+        <p>
+            @e.Result.MethodName
+        </p>
+
+        <table @*class="table"*@ cellspacing="2" border="1" cellpadding="5" width="600"  style="text-align:center;vertical-align:middle">
+            <tbody>
+                @for (int i = 0; i < e.Result.Schedule.GetLength(0); i++)
+                {
+                    <tr>
+                        @for (int j = 0; j < e.Result.Schedule.GetLength(1); j++)
+                        {
+                            <td>
+                                @e.Result.Schedule[i, j]
+                            </td>
+                        }
+                    </tr>
+                }
+                <tr>
+                    @for (int i = 0; i < e.Result.Loads.Length; i++)
+                    {
+                        <td>
+                            @e.Result.Loads[i]
+                        </td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    }
+    <p></p>
+    <table @*class="table"*@ cellspacing="2" border="1" cellpadding="5" width="600" style="text-align:center;vertical-align:middle">
+        <tbody>
+            @foreach (var c in element.StatisticElements)
+            {
+                <tr>
+                    <td>
+                        @(element.StatisticElements.IndexOf(c) + 1)
+                    </td>
+                    <td>
+                        @c.Result.MethodName
+                    </td>
+                    <td>
+                        @c.Result.Loads.Max()
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<p></p>
+<table @*class="table"*@ cellspacing="2" border="1" cellpadding="5" width="600" style="text-align:center;vertical-align:middle">
+    <tbody>
+        @foreach (var c in Model.TopMethod)
+        {
+            <tr>
+                <td>
+                    @c.Method
+                </td>
+                <td>
+                    @c.Index
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

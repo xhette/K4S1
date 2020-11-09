@@ -5,12 +5,15 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "K4S1", "K4S1\K4S1.csproj", "{8016613A-BD5F-4E16-B0E2-C00E721C8924}"
 	ProjectSection(ProjectDependencies) = postProject
+		{4C986A00-1A97-407E-8F8D-9C0C4C1B01C3} = {4C986A00-1A97-407E-8F8D-9C0C4C1B01C3}
 		{7E420525-2DC1-4876-B7C0-B03A00FB27C3} = {7E420525-2DC1-4876-B7C0-B03A00FB27C3}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KobLabs", "KobLabs\KobLabs.csproj", "{2FCC8922-88DF-4049-A1EA-497DE3803AD6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LyahLabs", "LyahLabs\LyahLabs.csproj", "{7E420525-2DC1-4876-B7C0-B03A00FB27C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChystLabs", "ChystLabs\ChystLabs.csproj", "{4C986A00-1A97-407E-8F8D-9C0C4C1B01C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +33,10 @@ Global
 		{7E420525-2DC1-4876-B7C0-B03A00FB27C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E420525-2DC1-4876-B7C0-B03A00FB27C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E420525-2DC1-4876-B7C0-B03A00FB27C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C986A00-1A97-407E-8F8D-9C0C4C1B01C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C986A00-1A97-407E-8F8D-9C0C4C1B01C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C986A00-1A97-407E-8F8D-9C0C4C1B01C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C986A00-1A97-407E-8F8D-9C0C4C1B01C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

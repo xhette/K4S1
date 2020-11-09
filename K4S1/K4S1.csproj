@@ -126,11 +126,24 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\KobakLabs\FinalStatisticModel.cs" />
     <Compile Include="Models\KobakLabs\L1ResultModel.cs" />
     <Compile Include="Models\KobakLabs\L1StatisticModel.cs" />
+    <Compile Include="Models\KobakLabs\L3Element.cs" />
+    <Compile Include="Models\KobakLabs\L3ResultModel.cs" />
+    <Compile Include="Models\KobakLabs\L4Element.cs" />
+    <Compile Include="Models\KobakLabs\L4Model.cs" />
+    <Compile Include="Models\KobakLabs\L4Result.cs" />
     <Compile Include="Models\KobakLabs\Lab1Input.cs" />
     <Compile Include="Models\KobakLabs\MethodEnum.cs" />
     <Compile Include="Models\KobakLabs\MethodModel.cs" />
+    <Compile Include="Models\KobakLabs\ResultModel.cs" />
+    <Compile Include="Models\KobakLabs\ScheduleResultModel.cs" />
+    <Compile Include="Models\KobakLabs\StatisticElementModel.cs" />
+    <Compile Include="Models\KobakLabs\TopMethod.cs" />
+    <Compile Include="Models\LyahnitsLabs\Code2Model.cs" />
+    <Compile Include="Models\LyahnitsLabs\Lab2Input.cs" />
+    <Compile Include="Models\LyahnitsLabs\Lab2Model.cs" />
     <Compile Include="Models\LyahnitsLabs\LyahLab1Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -175,6 +188,16 @@
     <Content Include="Views\LyahnitsLabs\Code.cshtml" />
     <Content Include="Views\LyahnitsLabs\Lab1.cshtml" />
     <Content Include="Views\LyahnitsLabs\Decode.cshtml" />
+    <Content Include="Views\KobakLabs\Lab2.cshtml" />
+    <Content Include="Views\KobakLabs\Lab2Result.cshtml" />
+    <Content Include="Views\KobakLabs\Lab3.cshtml" />
+    <Content Include="Views\KobakLabs\Lab3Result.cshtml" />
+    <Content Include="Views\KobakLabs\Lab4Result.cshtml" />
+    <Content Include="Views\LyahnitsLabs\Lab2.cshtml" />
+    <Content Include="Views\LyahnitsLabs\GetRandoms.cshtml" />
+    <Content Include="Views\LyahnitsLabs\GhistoCode.cshtml" />
+    <Content Include="Views\LyahnitsLabs\GhistoDecode.cshtml" />
+    <Content Include="Views\KobakLabs\Lab4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

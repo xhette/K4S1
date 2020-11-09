@@ -30,11 +30,31 @@ namespace K4S1.Models.KobakLabs
 				{
 					return "По убыванию";
 				}
+				else if (MethodName == MethodEnum.Critical)
+				{
+					return "Критический путь";
+				}
 				else
 				{
 					return "";
 				}
 			} 
+		}
+
+		public MethodModel() { }
+
+		public MethodModel (string name, int max)
+		{
+			if (name == "Случайный")
+			{
+				MethodName = MethodEnum.RandomMethod;
+			}
+			if (name == "Критический путь")
+			{
+				MethodName = MethodEnum.Critical;
+			}
+
+			MaxValue = max;
 		}
 
 		public static explicit operator MethodModel(MethodMax method)

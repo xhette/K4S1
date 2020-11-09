@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "GetRandoms";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model K4S1.Models.LyahnitsLabs.Lab2Model
+
+@foreach (var random in Model.Randoms)
+{
+    <span>@random </span>
+}
+
+<table class="table">
+    <tbody>
+        <tr>
+            <td>
+                0 - @Model.Intervals[0]
+            </td>
+            <td>
+                @Model.Ghistogramm[0]
+            </td>
+
+        </tr>
+        @for (int i = 1; i < Model.Intervals.Length; i++)
+        {
+            <tr>
+                <td>
+                    @Model.Intervals[i - 1]<span> - </span>@Model.Intervals[i]
+                </td>
+                <td>
+                    @Model.Ghistogramm[i]
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>
+    @Model.GhistAll
+</p>
+
+@Html.ActionLink("Скачать ключ", "DownloadKey", "LyahnitsLabs", new { key = Model.Key }, new { @class = "btn btn-primary" })
+@Html.ActionLink("Зашифровать", "GhistoCode", "LyahnitsLabs", new { @class = "btn btn-primary" })
+

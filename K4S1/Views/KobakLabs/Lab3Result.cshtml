@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewBag.Title = "Lab3Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model K4S1.Models.KobakLabs.L3ResultModel
+
+@foreach (var element in Model.Elements)
+{
+    <p></p>
+    <h4>
+        Массив №@(Model.Elements.IndexOf(element) + 1)
+    </h4>
+    <p></p>
+
+    <span>[</span>
+    for (int i = 0; i < element.Tasks.Length; i++)
+    {
+        <span>@element.Tasks[i] </span>
+
+    }
+    <span>]</span>
+    <p>
+    </p>
+    <h5>
+        Критический путь
+    </h5>
+    <p></p>
+    @*<table class="table" cellspacing="2" border="1" cellpadding="5" width="600" style="text-align:center;vertical-align:middle">
+        <tbody>
+            @for (int i = 0; i < element.StartCritical.GetLength(0); i++)
+            {
+                <tr>
+                    @for (int j = 0; j < element.StartCritical.GetLength(1); j++)
+                    {
+                        <td>
+                            @element.StartCritical[i, j]
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>*@
+    <p></p>
+    <table @*class="table"*@ cellspacing="2" border="1" cellpadding="5" width="600" style="text-align:center;vertical-align:middle">
+        <tbody>
+            @for (int i = 0; i < element.CriticalSchedule.GetLength(0); i++)
+            {
+                <tr>
+                    @for (int j = 0; j < element.CriticalSchedule.GetLength(1); j++)
+                    {
+                        <td>
+                            @element.CriticalSchedule[i, j]
+                        </td>
+                    }
+                </tr>
+            }
+            <tr>
+                @for (int j = 0; j < element.CriticalLoad.Length; j++)
+                {
+                    <td>
+                        @element.CriticalLoad[j]
+                    </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+    <p></p>
+    <h5>
+        Случайный
+    </h5>
+    <p></p>
+
+    @*<table class="table" cellspacing="2" border="1" cellpadding="5" width="600" style="text-align:center;vertical-align:middle">
+        <tbody>
+            @for (int i = 0; i < element.StartRandom.GetLength(0); i++)
+            {
+                <tr>
+                    @for (int j = 0; j < element.StartRandom.GetLength(1); j++)
+                    {
+                        <td>
+                            @element.StartRandom[i, j]
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>*@
+    <p></p>
+    <table @*class="table"*@ cellspacing="2" border="1" cellpadding="5" width="600" style="text-align:center;vertical-align:middle">
+        <tbody>
+            @for (int i = 0; i < element.RandomSchedule.GetLength(0); i++)
+            {
+                <tr>
+                    @for (int j = 0; j < element.RandomSchedule.GetLength(1); j++)
+                    {
+                        <td>
+                            @element.RandomSchedule[i, j]
+                        </td>
+                    }
+                </tr>
+            }
+            <tr>
+                @for (int j = 0; j < element.RandomLoad.Length; j++)
+                {
+                    <td>
+                        @element.RandomLoad[j]
+                    </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+    <p></p>
+    <table @*class="table"*@ cellspacing="2" border="1" cellpadding="5" width="600" style="text-align:center;vertical-align:middle">
+        <tbody>
+            @foreach (var e in element.MethodStatistics)
+            {
+                <tr>
+                    <td>
+                        @(element.MethodStatistics.IndexOf(e) + 1)
+                    </td>
+                    <td>
+                        @e.Method
+                    </td>
+                    <td>
+                        @e.MaxValue
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+    <p></p>
+    <table @*class="table"*@ cellspacing="2" border="1" cellpadding="5" width="600" style="text-align:center;vertical-align:middle">
+        <tbody>
+            @foreach (var c in Model.Top)
+            {
+                <tr>
+                    <td>
+                        @c.Method
+                    </td>
+                    <td>
+                        @c.Index
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

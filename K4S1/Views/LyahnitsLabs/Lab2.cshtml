@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "Lab2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("GetRandoms", "LyahnitsLabs", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <input type="text" name="n" id="n" />
+        <button class="btn btn-primary" type="submit">Просмотр</button>
+    </div>
+}

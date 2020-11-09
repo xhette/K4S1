@@ -1,0 +1,29 @@
+﻿@model K4S1.Models.LyahnitsLabs.Lab2Input
+
+@{
+    ViewBag.Title = "GhistoDeode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("GhistoDecode", "LyahnitsLabs", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Key, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Key, new { @class = "form-control", @type = "file" })
+            @Html.ValidationMessageFor(model => model.Key, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.File, new { @class = "form-control", @type = "file" })
+            @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Расшифровать</button>
+}

@@ -10,8 +10,31 @@ namespace LyahLabs
 	{
 		static void Main(string[] args)
 		{
-			string result = CodeMethods.Lab1Code("5 4 3 6", "TYI YFDN JGGCD");
-			string result2 = CodeMethods.Lab1Decode("5 4 3 6", result);
+			List<long> randoms = new List<long>();
+			List<long> randoms2 = new List<long>();
+			FuckingRandom fuckingRandom = new FuckingRandom(24);
+			for (int i = 0; i < 6; i++)
+			{
+				randoms.Add(fuckingRandom.Next());
+			}
+			randoms.Add(fuckingRandom.Next(true));
+			for (int i = 0; i < 6; i++)
+			{
+				randoms.Add(fuckingRandom.Next());
+			}
+
+			Ghistogramm ghistogramm = new Ghistogramm(24);
+			var g = ghistogramm.GetGhist(randoms);
+
+			List<string> key = new List<string>();
+
+			foreach (var r in randoms)
+			{
+				key.Add(r.ToString());
+			}
+
+			string code = CodeMethods.Lab2Code(key, "Съешь же ещё этих мягких французских булок да выпей чаю");
+			string decode = CodeMethods.Lab2Code(key, code);
 		}
 	}
 }

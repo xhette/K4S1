@@ -105,5 +105,42 @@ namespace LyahLabs
 
 			return temp;
 		}
+
+		public static string Lab2Code (List<string> key, string message)
+		{
+			List<byte> bitMessage = Encoding.Unicode.GetBytes(message).ToList();
+
+			List<byte> bitKey = new List<byte>();
+
+			foreach (var k in key)
+			{
+				var step = Encoding.Unicode.GetBytes(k).ToList();
+
+				foreach (var ch in step)
+				{
+					bitKey.Add(ch);
+				}
+			}
+
+			List<byte> coded = new List<byte>();
+			int index = 0;
+
+			foreach (var ch in bitMessage)
+			{
+				if (!(index < bitKey.Count))
+				{
+					index = 0;
+				}
+
+				var m = (byte)(ch ^ bitKey[index]);
+				index++;
+
+				coded.Add(m);
+			}
+
+			var mes = coded.ToArray();
+
+			return Encoding.Unicode.GetString(mes);
+		}
 	}
 }
