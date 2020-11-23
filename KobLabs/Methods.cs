@@ -732,7 +732,7 @@ namespace KobLabs
 			return (int)b;
 		}
 
-		public static List<int[]> BarierMethod(int[,] matrix, int barier)
+		public static int[,] BarierMethod(int[,] matrix, int barier)
 		{
 			int[,] list = new int[1, matrix.GetLength(1)];
 
@@ -766,7 +766,7 @@ namespace KobLabs
 					int newRowsCount = list.GetLength(0) + 1;
 					matrixRow++;
 
-					list = (int[,])CommonMatrixMetthods.ResizeMatrix(list, newRowsCount, loads.GetLength(1));
+					list = (int[,])CommonMatrixMetthods.ResizeMatrix(list, newRowsCount, list.GetLength(1));
 
 
 				}
@@ -774,6 +774,8 @@ namespace KobLabs
 
 			if (rowStoped != -1 && rowStoped < matrix.GetLength(0))
 			{
+				int matrixRow = list.GetLength(0) - 1;
+
 				int[] loads = new int[matrix.GetLength(1)];
 				for (int i = rowStoped; i < matrix.GetLength(0); i++)
 				{
@@ -797,23 +799,31 @@ namespace KobLabs
 					}
 
 					loads[minInd] += min;
-					list.Add(loads);
+					int newRowsCount = list.GetLength(0) + 1;
+					matrixRow++;
+
+					list = (int[,])CommonMatrixMetthods.ResizeMatrix(list, newRowsCount, list.GetLength(1));
+
+					for (int j = 0; j < loads.GetLength(1); j++)
+					{
+						list[matrixRow, j] = loads[j];
+					}
 				}
 			}
 
-			int[,] result = new int[list.Count, matrix.GetLength(1)];
+			//int[,] result = new int[list.GetLength(0), matrix.GetLength(1)];
 
-			int index = 0;
+			//int index = 0;
 
-			foreach(var e in list)
-			{
-				for (int i = 0; i < e.Length; i++)
-				{
-					result[index, i] = e[i];
-				}
+			//foreach(var e in list)
+			//{
+			//	for (int i = 0; i < e.Length; i++)
+			//	{
+			//		result[index, i] = e[i];
+			//	}
 
-				index++;
-			}
+			//	index++;
+			//}
 
 			return list;
 		}
