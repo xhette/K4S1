@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,6 +14,9 @@ namespace GabrLabs
 		{
 			get; set;
 		}
+
+		static Stopwatch startTime;
+		static TimeSpan resultTime;
 
 		#region Костыли
 		private class Point
@@ -55,7 +59,7 @@ namespace GabrLabs
 			{
 				for (int j = 0; j < _matrix.GetLength(1); j++)
 				{
-					_matrix[i, j] = (float)random.Next(1, 100) / 10f;
+					_matrix[i, j] = (float)random.Next(100, 1000) / 10f;
 				}
 			}
 		}
@@ -70,6 +74,9 @@ namespace GabrLabs
 			{
 				Matrix result = new Matrix(m1._matrix.GetLength(0), m2._matrix.GetLength(1));
 
+				startTime = Stopwatch.StartNew();
+				startTime.Stop();
+
 				for (int i = 0; i < m1._matrix.GetLength(0); i++)
 				{
 					for (int j = 0; j < m1._matrix.GetLength(1); j++)
@@ -77,6 +84,13 @@ namespace GabrLabs
 						result._matrix[i, j] = m1._matrix[i, j] + m2._matrix[i, j];
 					}
 				}
+				resultTime = startTime.Elapsed;
+
+				Console.WriteLine();
+				Console.WriteLine("Последовательное сложение");
+				resultTime = startTime.Elapsed;
+				result.WriteToConsole();
+				Console.WriteLine("Время выполнения: {0}", resultTime);
 
 				return result;
 			}
@@ -114,6 +128,9 @@ namespace GabrLabs
 			{
 				Matrix result = new Matrix(m1._matrix.GetLength(0), m2._matrix.GetLength(1));
 
+				startTime = Stopwatch.StartNew();
+				startTime.Stop();
+
 				for (int i = 0; i < result._matrix.GetLength(0); i++)
 				{
 					for (int j = 0; j < result._matrix.GetLength(1); j++)
@@ -125,9 +142,16 @@ namespace GabrLabs
 							c += (m1._matrix[i, t] * m2._matrix[t, j]);
 						}
 
-						result._matrix[i, j] = (float)Math.Round((double)c, 2);
+						result._matrix[i, j] = c;
 					}
 				}
+
+				resultTime = startTime.Elapsed;
+
+				Console.WriteLine();
+				Console.WriteLine("Последовательное умножение");
+				result.WriteToConsole();
+				Console.WriteLine("Время выполнения: {0}", resultTime);
 
 				return result;
 			}
@@ -135,14 +159,17 @@ namespace GabrLabs
 
 		public void WriteToConsole()
 		{
-			for (int i = 0; i < _matrix.GetLength(0); i++)
+			if (this.Rows < 20 && this.Cols < 20)
 			{
-				for (int j = 0; j < _matrix.GetLength(1); j++)
+				for (int i = 0; i < _matrix.GetLength(0); i++)
 				{
-					Console.Write(String.Format("{0,8}", _matrix[i, j]));
-				}
+					for (int j = 0; j < _matrix.GetLength(1); j++)
+					{
+						Console.Write(String.Format("{0,12}", _matrix[i, j]));
+					}
 
-				Console.WriteLine();
+					Console.WriteLine();
+				}
 			}
 		}
 
@@ -252,6 +279,9 @@ namespace GabrLabs
 				List<Thread> threads = new List<Thread>();
 				Matrix result = new Matrix(m1._matrix.GetLength(0), m2._matrix.GetLength(1));
 
+				startTime = Stopwatch.StartNew();
+				startTime.Stop();
+
 				for (int i = 0; i < m1._matrix.GetLength(0); i++)
 				{
 					for (int j = 0; j < m1._matrix.GetLength(1); j++)
@@ -264,6 +294,13 @@ namespace GabrLabs
 
 				foreach (Thread thread in threads)
 					thread.Join();
+
+				resultTime = startTime.Elapsed;
+
+				Console.WriteLine();
+				Console.WriteLine("Параллельное сложение");
+				result.WriteToConsole();
+				Console.WriteLine("Время выполнения: {0}", resultTime);
 
 				return result;
 			}
@@ -278,6 +315,9 @@ namespace GabrLabs
 			{
 				Matrix result = new Matrix(m1._matrix.GetLength(0), m2._matrix.GetLength(1));
 				List<Thread> threads = new List<Thread>();
+
+				startTime = Stopwatch.StartNew();
+				startTime.Stop();
 
 				for (int i = 0; i < result._matrix.GetLength(0); i++)
 				{
@@ -296,21 +336,18 @@ namespace GabrLabs
 				foreach (Thread thread in threads)
 					thread.Join();
 
+				resultTime = startTime.Elapsed;
+
+				Console.WriteLine();
+				Console.WriteLine("Параллельное умножение");
+				result.WriteToConsole();
+				Console.WriteLine("Время выполнения: {0}", resultTime);
+
 				return result;
 			}
 		}
 
 		#endregion
-
-		//#region AsyncParts
-		//private static async void AddAsync_Part(int row, int col, float val1, float val2, Matrix matrix)
-		//{
-		//	await Task.Run(() =>
-		//	{
-		//		AddParallel_Thread(row, col, val1, val2, matrix);
-		//	});
-		//}
-		//#endregion
 
 		#region AsyncMethods
 		public async static Task<Matrix> AddAsync(Matrix m1, Matrix m2)
@@ -321,20 +358,37 @@ namespace GabrLabs
 			}
 			else
 			{
-				List<Task> threads = new List<Task>();
-				Matrix result = new Matrix(m1._matrix.GetLength(0), m2._matrix.GetLength(1));
-
-				for (int i = 0; i < m1._matrix.GetLength(0); i++)
+				try
 				{
-					for (int j = 0; j < m1._matrix.GetLength(1); j++)
+					Matrix result = new Matrix(m1._matrix.GetLength(0), m2._matrix.GetLength(1));
+
+					startTime = Stopwatch.StartNew();
+					startTime.Stop();
+
+					for (int i = 0;  i < m1.Rows; i++)
 					{
-						threads.Add(Task.Run(() => AddParallel_Thread(i, j, m1._matrix[i, j], m2._matrix[i, j], result)));
+						for (int j = 0; j < m1.Cols; j ++)
+						{
+							await Task.Run(() =>
+							{
+								result._matrix[i, j] = m1._matrix[i, j] + m2._matrix[i, j];
+							});
+						}
 					}
+
+					resultTime = startTime.Elapsed;
+
+					Console.WriteLine();
+					Console.WriteLine("Асинхронное сложение");
+					result.WriteToConsole();
+					Console.WriteLine("Время выполнения: {0}", resultTime);
+
+					return result;
 				}
-
-				await Task.WhenAll(threads.ToArray());
-
-				return result;
+				catch (Exception ex)
+				{
+					return null;
+				}
 			}
 		}
 
@@ -346,24 +400,39 @@ namespace GabrLabs
 			}
 			else
 			{
-				Matrix result = new Matrix(m1._matrix.GetLength(0), m2._matrix.GetLength(1));
-				List<Task> threads = new List<Task>();
-
-				for (int i = 0; i < result._matrix.GetLength(0); i++)
+				try
 				{
-					for (int j = 0; j < result._matrix.GetLength(1); j++)
-					{
+					startTime = Stopwatch.StartNew();
+					startTime.Stop();
 
-						for (int t = 0; t < m1._matrix.GetLength(1); t++)
+					Matrix result = new Matrix(m1._matrix.GetLength(0), m2._matrix.GetLength(1));
+
+					for (int i = 0; i < result._matrix.GetLength(0); i++)
+					{
+						for (int j = 0; j < result._matrix.GetLength(1); j++)
 						{
-							threads.Add(Task.Run(() => MultipleParallel_Thread(i, j, m1._matrix[i, t], m2._matrix[t, j], result)));
+
+							for (int t = 0; t < m1._matrix.GetLength(1); t++)
+							{
+								await Task.Run(() => MultipleParallel_Thread(i, j, m1._matrix[i, t], m2._matrix[t, j], result));
+							}
 						}
 					}
+
+					resultTime = startTime.Elapsed;
+
+					Console.WriteLine();
+					Console.WriteLine("Асинхронное умножение");
+					result.WriteToConsole();
+					Console.WriteLine("Время выполнения: {0}", resultTime);
+
+					return result;
 				}
 
-				await Task.WhenAll(threads.ToArray());
-
-				return result;
+				catch (Exception ex)
+				{
+					return null;
+				}
 			}
 		}
 		#endregion

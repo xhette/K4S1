@@ -269,38 +269,38 @@ namespace Controllers
                 barier1 = Methods.Barier1(matrix);
                 var result1 = Methods.BarierMethod(step.Matrix, barier1);
 
-                foreach (var e in result1)
-                {
-                    int[] step2 = new int[e.Length];
+    //            foreach (var e in result1)
+    //            {
+    //                int[] step2 = new int[e.];
 
-                    for (int i = 0; i < e.Length; i++)
-					{
-                        step2[i] = e[i];
-					}
+    //                for (int i = 0; i < e.Length; i++)
+				//	{
+    //                    step2[i] = e[i];
+				//	}
 
-                    element1.Result.Add(step2);
-				}
+    //                element1.Result.Add(step2);
+				//}
 
-                L4Element element2 = new L4Element();
-                element2.Barier = "Поиск с барьером по минимальным элементам";
+    //            L4Element element2 = new L4Element();
+    //            element2.Barier = "Поиск с барьером по минимальным элементам";
 
-                barier2 = Methods.Barier2(matrix);
-                var result2 = Methods.BarierMethod(step.Matrix, barier2);
+    //            barier2 = Methods.Barier2(matrix);
+    //            var result2 = Methods.BarierMethod(step.Matrix, barier2);
 
-                foreach (var e in result2)
-                {
-                    int[] step2 = new int[e.Length];
+    //            foreach (var e in result2)
+    //            {
+    //                int[] step2 = new int[e.Length];
 
-                    for (int i = 0; i < e.Length; i++)
-                    {
-                        step2[i] = e[i];
-                    }
+    //                for (int i = 0; i < e.Length; i++)
+    //                {
+    //                    step2[i] = e[i];
+    //                }
 
-                    element2.Result.Add(step2);
-                }
+    //                element2.Result.Add(step2);
+    //            }
 
-                step.Methods.Add(element1);
-                step.Methods.Add(element2);
+                //step.Methods.Add(element1);
+                //step.Methods.Add(element2);
 
                 step.Methods = step.Methods.OrderBy(c => c.Result[c.Result.Count - 1].Max()).ToList();
 

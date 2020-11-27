@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeMethods.cs" />
+    <Compile Include="DESCycle.cs" />
     <Compile Include="FuckingRandom.cs" />
     <Compile Include="Ghistogramm.cs" />
     <Compile Include="Program.cs" />

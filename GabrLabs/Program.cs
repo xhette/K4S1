@@ -11,14 +11,45 @@ namespace GabrLabs
 	{
 		static void Main(string[] args)
 		{
-			Stopwatch startTime = Stopwatch.StartNew();
-			startTime.Stop();
-			TimeSpan resultTime = startTime.Elapsed;
+			//Stopwatch startTime;
+			//TimeSpan resultTime;
 
-			Matrix A = new Matrix(3, 2);
-			Matrix B = new Matrix(2, 2);
-			Matrix E = new Matrix(2, 2);
+			Matrix A = new Matrix(10, 12);
+			Matrix B = new Matrix(12, 10);
+			Matrix C = new Matrix(12, 10);
 
+			Random random = new Random();
+
+			A.Fill(random);
+			B.Fill(random);
+			C.Fill(random);
+
+			Console.WriteLine("A:");
+			Console.WriteLine();
+			A.WriteToConsole();
+
+			Console.WriteLine("B:");
+			Console.WriteLine();
+			B.WriteToConsole();
+
+			Console.WriteLine("C:");
+			Console.WriteLine();
+			C.WriteToConsole();
+
+			#region Сложение
+
+			Matrix Summ = C + B;
+			Matrix SummParallel = Matrix.AddParallel(C, B);
+			Matrix SummAsync = Matrix.AddAsync(C, B).Result;
+
+			#endregion
+
+			#region Умножение
+			Matrix Mult = A * B;
+			Matrix MultParallel = Matrix.MultipleParallel(A, B);
+			Matrix MultAsync = Matrix.MultipleAsync(A, B).Result;
+
+			#endregion
 
 			Console.ReadLine();
 		}
