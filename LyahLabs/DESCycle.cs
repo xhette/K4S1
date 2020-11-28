@@ -113,6 +113,18 @@ namespace LyahLabs
 			{ 14, 6, 61, 53, 45, 37, 29, 21, 13, 5, 28, 20, 12, 4 }
 		};
 
+		private readonly int[,] _GTable =
+		{
+			{ 57, 49, 41, 33, 25, 17, 9 },
+			{ 1, 58, 50, 42, 34, 26, 18 },
+			{ 10, 2, 59, 51, 43, 35, 27 },
+			{ 19, 11, 3, 60, 52, 44, 36 },
+			{ 63, 55, 47, 39, 31, 23, 15 },
+			{ 7, 62, 54, 46, 38, 30, 22 },
+			{ 14, 6, 61, 53, 45, 37, 29 },
+			{ 21, 13, 5, 28, 20, 12, 4 }
+		};
+
 		private readonly int[] _ITable = { 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1 };
 
 		private readonly int[,] _HTable =
@@ -131,15 +143,35 @@ namespace LyahLabs
 		};
 		#endregion
 
-		private const int sizeOfBlock = 128; 
-		private const int sizeOfChar = 16;
+		private const int sizeOfBlock = 64; 
+		private const int sizeOfChar = 8;
 
 		string[] Blocks;
+		string Key;
+		string C, D;
+		string _key;
+
+		public DESCycle(string message, string key)
+		{
+			_key = key;
+
+			string trueMessage = StringToRightLength(message);
+			string binaryMessage = StringToBinaryFormat(trueMessage);
+			Key = CorrectKeyWord(StringToBinaryFormat(key));
+			CutBinaryStringIntoBlocks(binaryMessage);
+		}
+
+		public string GetKey()
+		{
+			return _key;
+		}
 
 		private string StringToRightLength(string input)
 		{
 			while (((input.Length * sizeOfChar) % sizeOfBlock) != 0)
+			{
 				input += "#";
+			}
 
 			return input;
 		}
@@ -148,27 +180,368 @@ namespace LyahLabs
 		{
 			Blocks = new string[input.Length / sizeOfBlock];
 
-			int lengthOfBlock = input.Length / Blocks.Length;
+			int lengthOfBlock = sizeOfBlock;
 
 			for (int i = 0; i < Blocks.Length; i++)
+			{
 				Blocks[i] = input.Substring(i * lengthOfBlock, lengthOfBlock);
+			}
 		}
 
 		private string StringToBinaryFormat(string input)
+		{
+			return string.Join("", Encoding.GetEncoding("utf-16").GetBytes(input).Select(b => Convert.ToString(b, 2).PadLeft(sizeOfChar, '0')));
+		}
+
+		private string CorrectKeyWord(string input)
+		{
+			if (input.Length > 64)
+				input = input.Substring(0, 64);
+			else
+				while (input.Length < 64)
+					input = "0" + input;
+
+			return input;
+		}
+		private string StringFromBinaryToNormalFormat(string input)
+		{
+			return Encoding.GetEncoding("utf-16").GetString(Enumerable.Range(0, input.Length / 8).Select(i => input.Substring(i * sizeOfChar, sizeOfChar)).Select(s => Convert.ToByte(s, 2)).ToArray());
+		}
+
+		public string Code()
+		{
+			string gKey = G(Key);
+
+			CD(gKey);
+
+			string coded = "";
+
+			for (int i = 0; i < Blocks.Length; i++)
+			{
+				string block = CodeBlock(Blocks[i]);
+
+				coded += StringFromBinaryToNormalFormat(block);
+			}
+
+			return coded;
+		}
+
+		public string Decode()
+		{
+			string gKey = G(Key);
+
+			CD(gKey);
+
+			string coded = "";
+
+			for (int i = 0; i < Blocks.Length; i++)
+			{
+				string block = DecodeBlock(Blocks[i]);
+
+				coded += StringFromBinaryToNormalFormat(block);
+			}
+
+			return coded;
+		}
+
+		private string CodeBlock (string input)
+		{
+			string ip = IP(input);
+
+			string l0 = ip.Substring(0, ip.Length / 2);
+			string r0 = ip.Substring(ip.Length / 2, ip.Length / 2);
+
+			string r = r0, l = l0;
+
+			for (int i = 0; i < 16; i++)
+			{
+				string li = r;
+
+				string keyJ = Key_j(i);
+				string f = F(r, keyJ);
+
+				r = XOR(l, f);
+				l = li;
+			}
+
+			string concat = string.Concat(r, l);
+			string result = IP1(concat);
+
+			return result;
+		}
+		private string DecodeBlock(string input)
+		{
+			string ip = IP(input);
+
+			string l0 = ip.Substring(ip.Length / 2, ip.Length / 2);
+			string r0 = ip.Substring(0, ip.Length / 2);
+
+			string r = r0, l = l0;
+
+			for (int i = 16; i > 16; i++)
+			{
+				string li = r;
+
+				string keyJ = Key_j(i);
+				string f = F(r, keyJ);
+
+				r = XOR(l, f);
+				l = li;
+			}
+
+			string concat = string.Concat(r, l);
+			string result = IP1(concat);
+
+			return result;
+		}
+
+		private string F (string R, string key)
+		{
+			string eStep = E(R);
+			string xorStep = XOR(eStep, key);
+			string[] sSteps = new string[8];
+
+			for (int i = 0; i < 8; i++)
+			{
+				sSteps[i] += Sj(xorStep.Substring(i * 6, 6), i+1);
+			}
+
+			string sStep = string.Join("", sSteps);
+
+			string pStep = P(sStep);
+
+			return pStep;
+		}
+
+		private string Key_j (int step)
+		{
+			string keyC = LeftShift(C, _ITable[step]);
+			string keyD = LeftShift(D, _ITable[step]);
+
+			string key = H(keyC, keyD);
+
+			return key;
+		}
+
+		#region Blocks
+		private string IP (string input)
+		{
+			char[] bitArray = new char[input.Length];
+			int bitIndex = 0;
+
+			for (int i = 0; i < _IPTable.GetLength(0); i++)
+			{
+				for (int j = 0; j < _IPTable.GetLength(1); j++)
+				{
+					bitArray[bitIndex] = input[_IPTable[i, j] - 1];
+					bitIndex++;
+				}
+			}
+
+			return string.Join("", bitArray);
+		}
+
+		private string IP1(string input)
+		{
+			char[] bitArray = new char[input.Length];
+			int bitIndex = 0;
+
+			for (int i = 0; i < _IP1Table.GetLength(0); i++)
+			{
+				for (int j = 0; j < _IP1Table.GetLength(1); j++)
+				{
+					bitArray[bitIndex] = input[_IP1Table[i, j] - 1];
+					bitIndex++;
+				}
+			}
+
+			return string.Join("", bitArray);
+		}
+
+		private string E (string input)
+		{
+			char[] bitArray = new char[48];
+			int bitIndex = 0;
+
+			for (int i = 0; i < _ETable.GetLength(0); i++)
+			{
+				for (int j = 0; j < _ETable.GetLength(1); j++)
+				{
+					bitArray[bitIndex] = input[_ETable[i, j] - 1];
+					bitIndex++;
+				}
+			}
+
+			return string.Join("", bitArray);
+		}
+
+		private string XOR (string input, string key)
 		{
 			string output = "";
 
 			for (int i = 0; i < input.Length; i++)
 			{
-				string char_binary = Convert.ToString(input[i], 2);
+				bool bit1 = input[i].Equals('1'); ;
+				bool bit2 = key[i].Equals('1'); ;
 
-				while (char_binary.Length < sizeOfChar)
-					char_binary = "0" + char_binary;
+				bool bitResult = bit1 ^ bit2;
 
-				output += char_binary;
+				string xorResult = bitResult ? "1" : "0";
+
+				output += xorResult;
 			}
 
 			return output;
 		}
+
+		private string[] SBlocks (string input)
+		{
+			string[] output = new string[8];
+
+			for (int i = 0; i < 8; i++)
+			{
+				output[i] = input.Substring(i * 6, 6);
+			}
+
+			return output;
+		}
+
+		private string Sj(string input, int sIndex)
+		{
+			int[,] sTable = null;
+
+			switch (sIndex)
+			{
+				case 1:
+					sTable = _S1;
+					break;
+				case 2:
+					sTable = _S2;
+					break;
+				case 3:
+					sTable = _S3;
+					break;
+				case 4:
+					sTable = _S4;
+					break;
+				case 5:
+					sTable = _S5;
+					break;
+				case 6:
+					sTable = _S6;
+					break;
+				case 7:
+					sTable = _S7;
+					break;
+				case 8:
+					sTable = _S8;
+					break;
+				default:
+					sTable = _S1;
+					break;
+			}
+
+			string rowIndex = String.Format("{0}{1}", input[0], input[5]);
+			string colIndex = input.Substring(1, 4);
+
+			int row = Convert.ToInt32(rowIndex, 2);
+			int col = Convert.ToInt32(colIndex, 2);
+
+			string newBit = Convert.ToString(sTable[row, col], 2);
+
+			if (newBit.Length < 4)
+			{
+				int dif = 4 - newBit.Length;
+				string sub = "";
+
+				for (int i = 0; i < dif; i++)
+				{
+					sub += "0";
+				}
+
+				newBit = newBit.Insert(0, sub);
+			}
+
+			string output = newBit;
+
+			return output;
+		}
+
+		private string P (string input)
+		{
+			char[] bitArray = new char[32];
+			int bitIndex = 0;
+
+			for (int i = 0; i < _PTable.GetLength(0); i++)
+			{
+				for (int j = 0; j < _PTable.GetLength(1); j++)
+				{
+					bitArray[bitIndex] = input[_PTable[i, j] - 1];
+					bitIndex++;
+				}
+			}
+
+			return string.Join("", bitArray);
+		}
+		#endregion
+
+		#region Keys
+
+		private string G (string key)
+		{
+			char[] bitArray = new char[56];
+			int bitIndex = 0;
+
+			for (int i = 0; i < _GTable.GetLength(0); i++)
+			{
+				for (int j = 0; j < _GTable.GetLength(1); j++)
+				{
+					bitArray[bitIndex] = key[_GTable[i, j] - 1];
+					bitIndex++;
+				}
+			}
+
+			return string.Join("", bitArray);
+		}
+
+		private void CD(string key)
+		{
+			C = key.Substring(0, key.Length / 2);
+			D = key.Substring(key.Length / 2, key.Length / 2);
+		}
+
+		private string H (string keyC, string keyD)
+		{
+			string cdKey = "";
+
+			for (int i = 0; i < keyC.Length; i++)
+			{
+				cdKey += keyC[i];
+				cdKey += keyD[i];
+			}
+
+			char[] bitArray = new char[48];
+			int bitIndex = 0;
+
+			for (int i = 0; i < _HTable.GetLength(0); i++)
+			{
+				for (int j = 0; j < _HTable.GetLength(1); j++)
+				{
+					bitArray[bitIndex] = cdKey[_HTable[i, j] - 1];
+					bitIndex++;
+				}
+			}
+
+			return string.Join("", bitArray);
+		}
+
+		private string LeftShift (string key, int step)
+		{
+			int razsdv = key.Length - step;
+			var newKey = key.Substring(razsdv) + key.Substring(0, razsdv);
+
+			return newKey;
+		}
+		#endregion
 	}
 }
